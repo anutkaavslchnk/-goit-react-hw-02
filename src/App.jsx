@@ -31,8 +31,14 @@ const App = () => {
       bad: 0
     });
   };
+  
   const totalFeedback = saveTypesOfComments.good + saveTypesOfComments.neutral + saveTypesOfComments.bad;
-const positive=Math.round((saveTypesOfComments.good / totalFeedback) * 100);
+const positive=()=>{
+  if(totalFeedback>0){
+  return Math.round((saveTypesOfComments.good / totalFeedback) * 100);
+  }
+return 0;
+}
 
 
 useEffect(()=>{
@@ -42,11 +48,11 @@ window.localStorage.setItem("comments", JSON.stringify(saveTypesOfComments))
   return (
     <>
       <Description />
-      <Options good="Good" neutral="Neutral" bad="Bad"  updateFeedback={updateFeedback} />
+      <Options good="Good" neutral="Neutral" bad="Bad"  updateFeedback={updateFeedback} total={totalFeedback} deleteSmth={deleteFeedback}/>
       {totalFeedback > 0 ? (
         <>
-             <button onClick={deleteFeedback}>Reset</button> 
-        <Feedback feedback={saveTypesOfComments} total={totalFeedback} positive={positive} />
+           
+        <Feedback feedback={saveTypesOfComments} total={totalFeedback} positive={positive}  />
         </>
    
       ) : (
