@@ -4,6 +4,7 @@ import Feedback from "./components/Feedback/Feedback";
 import Options from "./components/Options/Options";
 import Notification from "./components/Notification/Notification";
 
+
 const App = () => {
   const [saveTypesOfComments, setSaveTypesOfComments] = useState(() => {
     const savedComments = window.localStorage.getItem("comments");
@@ -24,7 +25,7 @@ const App = () => {
       [feedbackType]: prev[feedbackType] + 1
     }));
   };
-  const deleteFeedback = () => {
+  const resetFeedback = () => {
     setSaveTypesOfComments({
       good: 0,
       neutral: 0,
@@ -33,13 +34,15 @@ const App = () => {
   };
   
   const totalFeedback = saveTypesOfComments.good + saveTypesOfComments.neutral + saveTypesOfComments.bad;
-const positive=()=>{
-  if(totalFeedback>0){
-  return Math.round((saveTypesOfComments.good / totalFeedback) * 100);
-  }
-return 0;
-}
 
+  const PositiveFeedback =()=>{
+    if(totalFeedback>0){
+    return Math.round((saveTypesOfComments.good / totalFeedback) * 100);
+    }
+  return 0;
+  }
+
+  
 
 useEffect(()=>{
 window.localStorage.setItem("comments", JSON.stringify(saveTypesOfComments))
@@ -48,11 +51,11 @@ window.localStorage.setItem("comments", JSON.stringify(saveTypesOfComments))
   return (
     <>
       <Description />
-      <Options good="Good" neutral="Neutral" bad="Bad"  updateFeedback={updateFeedback} total={totalFeedback} deleteSmth={deleteFeedback}/>
+      <Options good="Good" neutral="Neutral" bad="Bad"  updateFeedback={updateFeedback} total={totalFeedback} resetFeedback={resetFeedback}/>
       {totalFeedback > 0 ? (
         <>
            
-        <Feedback feedback={saveTypesOfComments} total={totalFeedback} positive={positive}  />
+        <Feedback feedback={saveTypesOfComments} total={totalFeedback} positiveFeedback={PositiveFeedback()}  />
         </>
    
       ) : (
